@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">Rumble_Clone</string>
+    <string-array name="gender_options">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+
+        <string name="app_name">Rumble Clone</string>
+        <!-- Add other strings here -->
+
+
 </resources>

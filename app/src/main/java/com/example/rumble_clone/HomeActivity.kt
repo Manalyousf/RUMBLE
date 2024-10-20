@@ -1,40 +1,31 @@
 package com.example.rumble_clone
-
-import android.content.Intent
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import android.widget.Button
+import android.os.Bundle
 import android.widget.Toast
+import android.widget.Button
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
 
-        // Handle button clicks
-        findViewById<Button>(R.id.email_button).setOnClickListener {
-            val intent = Intent(this, SignInActivity::class.java)
-            startActivity(intent)  // Navigate to SignInActivity
-        }
+        // Setup RecyclerView
+        val recyclerView = findViewById<RecyclerView>(R.id.recommendations_recycler)
+        val channels = listOf(
+            Channel("Jerry After Dark", R.drawable.channel_image1),
+            Channel("Wake Up Mintzy", R.drawable.channel_image2),
+            Channel("The Wontons", R.drawable.channel_image3),
+            Channel("UFC", R.drawable.channel_image4)
+        )
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = ChannelAdapter(channels)
 
-
-        findViewById<Button>(R.id.google_button).setOnClickListener {
-            Toast.makeText(this, "Continue with Google", Toast.LENGTH_SHORT).show()
-        }
-
-        findViewById<Button>(R.id.facebook_button).setOnClickListener {
-            Toast.makeText(this, "Continue with Facebook", Toast.LENGTH_SHORT).show()
-        }
-
-        // Handle window insets for edge-to-edge experience
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        // Setup BottomNavigationView
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         // Set default selected item to home
