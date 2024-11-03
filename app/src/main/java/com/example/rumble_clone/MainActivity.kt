@@ -1,73 +1,37 @@
 package com.example.rumble_clone
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import android.widget.Button
-import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Handle button clicks
-        findViewById<Button>(R.id.email_button).setOnClickListener {
-            val intent = Intent(this, SignInActivity::class.java)
-            startActivity(intent)  // Navigate to SignInActivity
-        }
+        // Set the default fragment
+        loadFragment(HomeFragment())
 
-
-        findViewById<Button>(R.id.google_button).setOnClickListener {
-            Toast.makeText(this, "Continue with Google", Toast.LENGTH_SHORT).show()
-        }
-
-        findViewById<Button>(R.id.facebook_button).setOnClickListener {
-            Toast.makeText(this, "Continue with Facebook", Toast.LENGTH_SHORT).show()
-        }
-
-        // Handle window insets for edge-to-edge experience
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        // Handle navigation item selection
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        // Set default selected item to home
-        bottomNavigationView.selectedItemId = R.id.home
-
         bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.home -> {
-                    startActivity(Intent(this, HomeActivity::class.java))
-                    true
-                }
-                R.id.discover -> {
-                    // Start Discover Activity
-                    startActivity(Intent(this, DiscoverActivity::class.java))
-                    true
-                }
-                R.id.create -> {
-                    // Start Create Activity
-                    startActivity(Intent(this, CreateActivity::class.java))
-                    true
-                }
-                R.id.library -> {
-                    // Start Library Activity
-                    startActivity(Intent(this, LibraryActivity::class.java))
-                    true
-                }
-                R.id.account -> {
-                    // Start Account Activity
-                    startActivity(Intent(this, AccountActivity::class.java))
-                    true
-                }
-                else -> false
+            val selectedFragment = when (item.itemId) {
+                R.id.home -> HomeFragment()
+                R.id.discover -> DiscoverFragment()
+                R.id.create -> CreateFragment()
+                R.id.library -> LibraryFragment()
+                R.id.account -> AccountFragment()
+                else -> null
             }
+            selectedFragment?.let { loadFragment(it) }
+            selectedFragment != null
         }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }

@@ -1,31 +1,41 @@
 package com.example.rumble_clone
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import android.os.Bundle
-import android.widget.Toast
+
 import android.content.Intent
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import android.widget.Button
+import android.widget.Toast
 import com.example.rumble_clone.R
 
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-class AccountActivity : AppCompatActivity() {
+class WelcomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account)
+        setContentView(R.layout.activity_welcome)
 
-        // Set up form handling, for example:
-        findViewById<Button>(R.id.submit_button).setOnClickListener {
-            val username = findViewById<EditText>(R.id.username_field).text.toString()
-            val email = findViewById<EditText>(R.id.email_field).text.toString()
-            val birthday = findViewById<EditText>(R.id.birthday_field).text.toString()
-            val gender = findViewById<Spinner>(R.id.gender_spinner).selectedItem.toString()
+        // Button click to navigate to SignInActivity
+        findViewById<Button>(R.id.email_button).setOnClickListener {
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)  // Navigate to SignInActivity
+        }
 
-            // Handle the form submission logic
-            Toast.makeText(this, "Account Created: $username", Toast.LENGTH_SHORT).show()
+
+        findViewById<Button>(R.id.google_button).setOnClickListener {
+            Toast.makeText(this, "Continue with Google", Toast.LENGTH_SHORT).show()
+        }
+
+        findViewById<Button>(R.id.facebook_button).setOnClickListener {
+            Toast.makeText(this, "Continue with Facebook", Toast.LENGTH_SHORT).show()
+        }
+
+        // Handle window insets for edge-to-edge experience
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
